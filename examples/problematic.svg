@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 120" width="480" height="120" role="img" onload="initialize()">
+  <title></title>
+  <g class="card">
+    <rect class="card" x="12" y="20" width="100" height="72"/>
+    <text x="28" y="62" font-size="22">A label that will not fit inside this card</text>
+  </g>
+  <image href="https://assets.example.invalid/preview.png" x="150" y="20" width="64" height="64"/>
+  <use href="#missing-symbol"/>
+</svg>

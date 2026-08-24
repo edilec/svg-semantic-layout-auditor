@@ -1,0 +1,35 @@
+name: Feature request
+description: Propose a focused, statically decidable SVG audit rule or capability.
+title: "[Feature]: "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What real SVG failure is currently difficult to detect?
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Synthetic example
+      description: Provide the smallest publishable SVG that shows the problem.
+    validations:
+      required: true
+  - type: textarea
+    id: boundary
+    attributes:
+      label: Proposed rule boundary and false positives
+      description: Explain what the rule should and should not report.
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Submission checks
+      options:
+        - label: The example contains no private, client, or third-party material.
+          required: true
+        - label: The proposal does not require rendering or executing untrusted SVG content in the core package.
+          required: true

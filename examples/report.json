@@ -1,0 +1,39 @@
+{
+  "schema": "dev.edilec.svg-semantic-layout-audit.v1",
+  "toolVersion": "0.1.0",
+  "summary": {
+    "fileCount": 1,
+    "cleanFileCount": 1,
+    "affectedFileCount": 0,
+    "findingCount": 0,
+    "bySeverity": {
+      "error": 0,
+      "warning": 0,
+      "info": 0
+    },
+    "byCode": {},
+    "skippedSymlinkCount": 0
+  },
+  "files": [
+    {
+      "path": "examples/accessible-card.svg",
+      "validSvg": true,
+      "metadata": {
+        "bytes": 1044,
+        "elementCount": 13,
+        "viewBox": {
+          "x": 0,
+          "y": 0,
+          "width": 640,
+          "height": 360
+        },
+        "width": "640",
+        "height": "360",
+        "decorative": false,
+        "title": "Request processing stages",
+        "description": "Three labelled stages show validation, processing, and delivery."
+      },
+      "findings": []
+    }
+  ]
+}

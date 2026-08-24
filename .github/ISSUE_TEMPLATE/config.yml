@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security report
+    url: https://github.com/edilec/svg-semantic-layout-auditor/security/policy
+    about: Report suspected vulnerabilities privately.
+  - name: Support policy
+    url: https://github.com/edilec/svg-semantic-layout-auditor/blob/main/SUPPORT.md
+    about: Review the project support boundary before opening an issue.

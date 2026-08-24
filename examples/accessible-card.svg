@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" width="640" height="360" role="img" aria-labelledby="diagram-title diagram-description">
+  <title id="diagram-title">Request processing stages</title>
+  <desc id="diagram-description">Three labelled stages show validation, processing, and delivery.</desc>
+  <rect width="640" height="360" fill="#f8fafc"/>
+  <g class="card">
+    <rect class="card" x="48" y="92" width="160" height="120" rx="16" fill="#ffffff" stroke="#94a3b8"/>
+    <text x="128" y="158" text-anchor="middle" font-size="20" fill="#0f172a">Validate</text>
+  </g>
+  <g class="card">
+    <rect class="card" x="240" y="92" width="160" height="120" rx="16" fill="#ffffff" stroke="#94a3b8"/>
+    <text x="320" y="158" text-anchor="middle" font-size="20" fill="#0f172a">Process</text>
+  </g>
+  <g class="card">
+    <rect class="card" x="432" y="92" width="160" height="120" rx="16" fill="#ffffff" stroke="#94a3b8"/>
+    <text x="512" y="158" text-anchor="middle" font-size="20" fill="#0f172a">Deliver</text>
+  </g>
+</svg>

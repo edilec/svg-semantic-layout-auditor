@@ -1,0 +1,48 @@
+{
+  "name": "@edilec/svg-semantic-layout-auditor",
+  "version": "0.1.0",
+  "description": "Dependency-free SVG accessibility, reference-safety, and text-layout auditor.",
+  "type": "module",
+  "bin": {
+    "svg-semantic-layout-auditor": "./src/cli.js"
+  },
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "files": [
+    "src",
+    "docs",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE",
+    "PROVENANCE.md",
+    "SECURITY.md",
+    "SUPPORT.md"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "lint": "node --check src/audit.js && node --check src/cli.js && node --check src/files.js && node --check src/geometry.js && node --check src/index.js && node --check src/output.js && node --check src/report.js && node --check src/xml.js",
+    "test": "node --test",
+    "test:coverage": "node --test --experimental-test-coverage",
+    "check": "npm run lint && npm test && npm run test:coverage && npm pack --dry-run"
+  },
+  "keywords": [
+    "svg",
+    "accessibility",
+    "audit",
+    "cli",
+    "static-analysis"
+  ],
+  "author": "Edilec Private Limited",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edilec/svg-semantic-layout-auditor.git"
+  },
+  "bugs": {
+    "url": "https://github.com/edilec/svg-semantic-layout-auditor/issues"
+  },
+  "homepage": "https://github.com/edilec/svg-semantic-layout-auditor#readme"
+}
