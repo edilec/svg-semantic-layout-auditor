@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640" role="img" aria-labelledby="ssla-title ssla-description">
+  <title id="ssla-title">SVG Semantic Layout Auditor repository preview</title>
+  <desc id="ssla-description">An Edilec open-source card showing an SVG canvas with semantic metadata, reference, and layout checks.</desc>
+  <defs>
+    <linearGradient id="ssla-background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#090D0C"/>
+      <stop offset="1" stop-color="#111915"/>
+    </linearGradient>
+    <linearGradient id="ssla-emerald" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#A7F3C4"/>
+      <stop offset="1" stop-color="#58C98A"/>
+    </linearGradient>
+    <pattern id="ssla-grid" width="44" height="44" patternUnits="userSpaceOnUse">
+      <path d="M44 0H0V44" fill="none" stroke="#DDE8E1" stroke-opacity="0.05"/>
+    </pattern>
+    <filter id="ssla-shadow" x="-25%" y="-25%" width="150%" height="150%">
+      <feDropShadow dx="0" dy="20" stdDeviation="28" flood-color="#000000" flood-opacity="0.34"/>
+    </filter>
+  </defs>
+
+  <rect width="1280" height="640" fill="url(#ssla-background)"/>
+  <rect width="1280" height="640" fill="url(#ssla-grid)"/>
+  <rect width="12" height="640" fill="url(#ssla-emerald)"/>
+
+  <g transform="translate(76 64)">
+    <g transform="scale(.44)" fill="#F4F7F5">
+      <path d="m76.729 74.083c-20.208 1.853-40.258 12.034-62.863 26.338-.521.329-.633.205-.244-.273 20.185-24.751 64.581-45.388 103.577-41.614.905.088 2.876.534.654 2.607-10.966 10.476-22.296 20.479-33.233 30.992-2.885 2.792-6.077 3.413-9.693 2.164-9.973-4.023-20.689-6.162-31.805-4.08-.606.113-.716-.108-.238-.498 9.196-7.514 21.794-12.155 33.846-15.636zM41.015 72.807C59.029 54.525 80.655 40.005 99.973 23.302c3.511-3.036 4.341-1.761 4.592 2.431.433 7.21.811 14.446 1.189 21.671.188 3.581-1.009 4.966-4.195 5.283-26.2 2.609-47.123 13.283-60.343 20.389-.543.292-.634.171-.201-.269z"/>
+    </g>
+    <text x="64" y="37" fill="#F4F7F5" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="25" font-weight="650" letter-spacing="7">EDILEC</text>
+    <text x="0" y="105" fill="#83DBA7" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="18" font-weight="700" letter-spacing="3">OPEN SOURCE / CLI</text>
+  </g>
+
+  <g transform="translate(76 210)" font-family="Inter, ui-sans-serif, system-ui, sans-serif">
+    <text x="0" y="0" fill="#F4F7F5" font-size="60" font-weight="730" letter-spacing="-2">SVG Semantic</text>
+    <text x="0" y="68" fill="#F4F7F5" font-size="60" font-weight="730" letter-spacing="-2">Layout Auditor</text>
+    <text x="1" y="127" fill="#AEB9B3" font-size="24" font-weight="450">Static checks for SVG structure and layout.</text>
+  </g>
+
+  <g transform="translate(78 493)" font-family="Inter, ui-sans-serif, system-ui, sans-serif">
+    <circle cx="7" cy="-7" r="7" fill="#7BE2A5"/>
+    <text x="30" y="0" fill="#B8C3BD" font-size="16" font-weight="650" letter-spacing="1.8">ACCESSIBILITY</text>
+    <circle cx="208" cy="-7" r="3" fill="#526059"/>
+    <text x="230" y="0" fill="#B8C3BD" font-size="16" font-weight="650" letter-spacing="1.8">REFERENCES</text>
+    <circle cx="388" cy="-7" r="3" fill="#526059"/>
+    <text x="410" y="0" fill="#B8C3BD" font-size="16" font-weight="650" letter-spacing="1.8">LAYOUT</text>
+  </g>
+
+  <text x="78" y="553" fill="#69786F" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="17">github.com/edilec/svg-semantic-layout-auditor</text>
+
+  <g transform="translate(788 82)" filter="url(#ssla-shadow)" font-family="Inter, ui-sans-serif, system-ui, sans-serif">
+    <rect width="410" height="476" rx="28" fill="#151C19" stroke="#6E8077" stroke-opacity="0.42"/>
+    <text x="34" y="49" fill="#8F9D96" font-size="14" font-weight="700" letter-spacing="2.2">SVG CANVAS</text>
+    <text x="300" y="49" fill="#83DBA7" font-size="13" font-weight="700">CHECKED</text>
+    <path d="M34 76H376" stroke="#34423B"/>
+
+    <rect x="34" y="102" width="342" height="222" rx="18" fill="#0C1210" stroke="#486154"/>
+    <g stroke="#64756B" stroke-width="2" stroke-dasharray="4 7">
+      <path d="M72 128V298M338 128V298M60 148H350M60 278H350"/>
+    </g>
+    <rect x="78" y="152" width="254" height="122" rx="16" fill="#13211A" stroke="#70A386"/>
+    <circle cx="112" cy="188" r="12" fill="#1F4B35" stroke="#83DBA7"/>
+    <path d="M142 180H294M142 202H258" stroke="#84958B" stroke-width="7" stroke-linecap="round"/>
+    <rect x="100" y="230" width="210" height="20" rx="10" fill="#0B1510" stroke="#294C38"/>
+    <path d="M116 240H282" stroke="#5ED091" stroke-width="5" stroke-linecap="round"/>
+
+    <g transform="translate(34 352)">
+      <rect width="104" height="72" rx="14" fill="#0D1310" stroke="#33423A"/>
+      <circle cx="22" cy="24" r="7" fill="#7BE2A5"/>
+      <text x="38" y="29" fill="#D8E2DD" font-size="13" font-weight="680">title</text>
+      <text x="20" y="54" fill="#819188" font-size="11">semantic</text>
+    </g>
+    <g transform="translate(153 352)">
+      <rect width="104" height="72" rx="14" fill="#0D1310" stroke="#33423A"/>
+      <circle cx="22" cy="24" r="7" fill="#7BE2A5"/>
+      <text x="38" y="29" fill="#D8E2DD" font-size="13" font-weight="680">#ref</text>
+      <text x="20" y="54" fill="#819188" font-size="11">resolved</text>
+    </g>
+    <g transform="translate(272 352)">
+      <rect width="104" height="72" rx="14" fill="#0D1310" stroke="#33423A"/>
+      <circle cx="22" cy="24" r="7" fill="#7BE2A5"/>
+      <text x="38" y="29" fill="#D8E2DD" font-size="13" font-weight="680">text</text>
+      <text x="20" y="54" fill="#819188" font-size="11">inside</text>
+    </g>
+  </g>
+</svg>
