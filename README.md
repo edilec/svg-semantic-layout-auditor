@@ -204,3 +204,5 @@ Report vulnerabilities privately using [SECURITY.md](./SECURITY.md). Use
 
 Licensed under the [MIT License](./LICENSE). Copyright © 2026 Edilec Private
 Limited.
+
+Maintained by [Edilec](https://edilec.com/).
