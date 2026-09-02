@@ -1,0 +1,13 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using the metadata in this file."
+title: "SVG Semantic Layout Auditor"
+type: software
+authors:
+  - name: "Edilec Private Limited"
+    website: "https://edilec.com/"
+abstract: "Dependency-free command-line tool for auditing SVG accessibility, reference safety, and text layout."
+version: "0.1.0"
+date-released: 2026-08-24
+license: MIT
+repository-code: "https://github.com/edilec/svg-semantic-layout-auditor"
+url: "https://edilec.com/"
