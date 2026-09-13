@@ -3,6 +3,23 @@
 Severity expresses the default operational importance, not proof that the SVG
 is exploitable or unusable in every embedding context.
 
+## Evidence basis
+
+Every finding carries a `basis` field saying what kind of evidence it rests on.
+The report summary counts them under `summary.byBasis`, and the text report
+marks the estimated ones `[estimated]`.
+
+| Basis | Meaning |
+| --- | --- |
+| `static` | Read directly from the parsed document. Exact: a duplicate ID either exists or it does not. |
+| `estimated` | Produced by a text-layout heuristic using an average-character-width model. A browser measurement can disagree in either direction. |
+
+Only `TEXT_MAY_OVERFLOW_VIEWBOX` and `TEXT_MAY_OVERFLOW_CONTAINER` are
+`estimated`; every other rule is `static`. Font loading, font fallback,
+kerning, ligatures, shaping and text-rendering settings all move real glyph
+boxes, so estimated findings are review prompts rather than measurements. Pass
+`--no-layout` to skip them entirely.
+
 ## Structure and limits
 
 | Code | Severity | Meaning |
@@ -23,6 +40,7 @@ is exploitable or unusable in every embedding context.
 | `DESCRIPTION_EMPTY` | warning | The direct description element is empty. |
 | `ARIA_REFERENCE_BROKEN` | error | `aria-labelledby` names an ID that does not exist. |
 | `TITLE_NOT_EXPLICITLY_LABELLED` | info | `role="img"` relies on an implicit title association. |
+| `DECORATIVE_WITH_ACCESSIBLE_NAME` | warning | An SVG hidden from assistive technology still supplies a name. |
 
 ## Canvas and layout
 
@@ -32,8 +50,8 @@ is exploitable or unusable in every embedding context.
 | `DIMENSIONS_INCOMPLETE` | warning | Only width or height is present. |
 | `DIMENSION_NON_POSITIVE` | error | A numeric width or height is not positive. |
 | `ASPECT_RATIO_MISMATCH` | warning | Dimensions and viewBox have different ratios while aspect ratio is preserved. |
-| `TEXT_MAY_OVERFLOW_VIEWBOX` | warning | Estimated text bounds extend materially beyond the canvas. |
-| `TEXT_MAY_OVERFLOW_CONTAINER` | warning | Estimated text bounds extend materially beyond a marked card or box. |
+| `TEXT_MAY_OVERFLOW_VIEWBOX` | warning | Estimated text bounds extend materially beyond the canvas. Basis: `estimated`. |
+| `TEXT_MAY_OVERFLOW_CONTAINER` | warning | Estimated text bounds extend materially beyond a marked card or box. Basis: `estimated`. |
 
 ## IDs and references
 

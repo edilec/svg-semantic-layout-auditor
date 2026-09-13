@@ -3,6 +3,23 @@
 All notable changes are documented here. This project follows
 [Semantic Versioning](https://semver.org/).
 
+## Unreleased
+
+### Added
+
+- `basis` on every finding (`static` or `estimated`) and `summary.byBasis`
+  counts, so consumers can separate exact document facts from the text-layout
+  heuristic without parsing message prose;
+- an `[estimated]` marker and an explanatory line in the text report;
+- `DECORATIVE_WITH_ACCESSIBLE_NAME`, reporting an SVG that is hidden from
+  assistive technology while still supplying `aria-label`, `aria-labelledby`,
+  or a non-empty `<title>`;
+- the exported `ESTIMATED_FINDING_CODES` list and `withBasis` helper.
+
+### Changed
+
+- `formatTextReport` tolerates a report saved before `byBasis` existed.
+
 ## 0.1.0 - 2026-08-25
 
 ### Added

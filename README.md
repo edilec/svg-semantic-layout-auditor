@@ -26,14 +26,41 @@ executing the SVG.
 | Area | Representative checks |
 | --- | --- |
 | Structure | XML tag balance, one top-level `<svg>`, byte, depth, attribute, diagnostic, and element limits |
-| Accessibility | direct `<title>` and `<desc>`, empty metadata, broken `aria-labelledby` |
+| Accessibility | direct `<title>` and `<desc>`, empty metadata, broken `aria-labelledby`, decorative graphics that still name themselves |
 | Canvas | valid positive `viewBox`, incomplete dimensions, aspect-ratio mismatch |
 | References | duplicate IDs, broken fragments, URL controls, effective `xml:base`, remote or non-portable resources |
 | Active content | `<script>`, inline event handlers, `<foreignObject>`, CSS imports |
 | Layout heuristics | estimated text overflow beyond the viewBox or a marked card/box |
 
 Decorative SVGs marked with `aria-hidden="true"`, `role="none"`, or
-`role="presentation"` are not required to have a title or description.
+`role="presentation"` are not required to have a title or description. A
+decorative SVG that nevertheless supplies `aria-label`, `aria-labelledby`, or a
+non-empty `<title>` is reported as contradictory: either the graphic is
+meaningful and should not be hidden, or the name should go.
+
+### Estimates are labelled
+
+Every finding carries a `basis` field, so a consumer never has to read message
+prose to tell an exact document fact from a heuristic:
+
+- `static` — read directly from the parsed document. A duplicate ID either
+  exists or it does not.
+- `estimated` — produced by the text-layout heuristic, which models glyph
+  widths rather than rendering them. Font loading, fallback, kerning,
+  ligatures and shaping all move real boxes, so a browser can disagree in
+  either direction.
+
+`summary.byBasis` counts both, and the text report marks estimated findings:
+
+```text
+  WARNING TEXT_MAY_OVERFLOW_VIEWBOX:5:5 Estimated bounds for “A label…” extend beyond the SVG viewBox. [estimated]
+
+1 file(s), 8 finding(s): 2 error, 6 warning, 0 info.
+2 finding(s) marked [estimated] come from a text-layout heuristic, not a browser measurement.
+```
+
+Pass `--no-layout` to skip estimated checks entirely. See
+[`docs/rules.md`](./docs/rules.md) for the full catalog.
 
 ## Requirements
 
