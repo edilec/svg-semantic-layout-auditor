@@ -253,11 +253,24 @@ function auditActiveContent(allElements, idMap, { maxFindings = 1_000 } = {}) {
   return findings
 }
 
+/**
+ * Order by UTF-16 code unit, deliberately not by locale.
+ *
+ * `localeCompare` depends on ICU data that varies between Node builds and
+ * platforms. Rule codes mix uppercase letters with underscores, and collation
+ * treats punctuation differently from raw code points, so the same document
+ * could produce differently ordered findings on two correct machines.
+ */
+function byCodeUnit(left, right) {
+  if (left === right) return 0
+  return left < right ? -1 : 1
+}
+
 function compareFindings(left, right) {
   const severityOrder = { error: 0, warning: 1, info: 2 }
   return (severityOrder[left.severity] ?? 9) - (severityOrder[right.severity] ?? 9) ||
     (left.location?.offset ?? Number.MAX_SAFE_INTEGER) - (right.location?.offset ?? Number.MAX_SAFE_INTEGER) ||
-    left.code.localeCompare(right.code)
+    byCodeUnit(left.code, right.code)
 }
 
 /**

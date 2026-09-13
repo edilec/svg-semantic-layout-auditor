@@ -16,6 +16,14 @@ All notable changes are documented here. This project follows
   or a non-empty `<title>`;
 - the exported `ESTIMATED_FINDING_CODES` list and `withBasis` helper.
 
+### Fixed
+
+- findings and the `byCode` summary are ordered by UTF-16 code unit rather than
+  by locale. Rule codes mix uppercase letters with underscores, and collation
+  treats punctuation differently from raw code points, so the same document
+  could produce differently ordered findings on two machines with different ICU
+  data. The checked-in example report is unaffected.
+
 ### Changed
 
 - `formatTextReport` tolerates a report saved before `byBasis` existed.
