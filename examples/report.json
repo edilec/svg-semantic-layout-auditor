@@ -11,6 +11,10 @@
       "warning": 0,
       "info": 0
     },
+    "byBasis": {
+      "static": 0,
+      "estimated": 0
+    },
     "byCode": {},
     "skippedSymlinkCount": 0
   },

@@ -18,9 +18,11 @@ export function createReport(results, { cwd = process.cwd(), skippedSymlinks = [
   }))
   const findings = files.flatMap((file) => file.findings.map((item) => ({ ...item, path: file.path })))
   const bySeverity = { error: 0, warning: 0, info: 0 }
+  const byBasis = { static: 0, estimated: 0 }
   const byCode = {}
   for (const item of findings) {
     bySeverity[item.severity] = (bySeverity[item.severity] ?? 0) + 1
+    byBasis[item.basis] = (byBasis[item.basis] ?? 0) + 1
     byCode[item.code] = (byCode[item.code] ?? 0) + 1
   }
   return {
@@ -33,6 +35,7 @@ export function createReport(results, { cwd = process.cwd(), skippedSymlinks = [
       affectedFileCount: files.filter((file) => file.findings.length > 0).length,
       findingCount: findings.length,
       bySeverity,
+      byBasis,
       byCode: Object.fromEntries(Object.entries(byCode).sort(([left], [right]) => left.localeCompare(right))),
       skippedSymlinkCount: skippedSymlinks.length,
     },
@@ -46,11 +49,16 @@ export function formatTextReport(report) {
     lines.push(`${file.findings.length === 0 ? '✓' : '•'} ${terminalSafe(file.path)}`)
     for (const item of file.findings) {
       const location = item.location?.line ? `:${item.location.line}:${item.location.column}` : ''
-      lines.push(`  ${item.severity.toUpperCase().padEnd(7)} ${terminalSafe(item.code)}${location} ${terminalSafe(item.message)}`)
+      const estimated = item.basis === 'estimated' ? ' [estimated]' : ''
+      lines.push(`  ${item.severity.toUpperCase().padEnd(7)} ${terminalSafe(item.code)}${location} ${terminalSafe(item.message)}${estimated}`)
     }
   }
   lines.push('')
   lines.push(`${report.summary.fileCount} file(s), ${report.summary.findingCount} finding(s): ${report.summary.bySeverity.error} error, ${report.summary.bySeverity.warning} warning, ${report.summary.bySeverity.info} info.`)
+  // Tolerate a report saved before byBasis existed.
+  if ((report.summary.byBasis?.estimated ?? 0) > 0) {
+    lines.push(`${report.summary.byBasis.estimated} finding(s) marked [estimated] come from a text-layout heuristic, not a browser measurement.`)
+  }
   if (report.summary.skippedSymlinkCount > 0) lines.push(`${report.summary.skippedSymlinkCount} symbolic link(s) skipped.`)
   return `${lines.join('\n')}\n`
 }
