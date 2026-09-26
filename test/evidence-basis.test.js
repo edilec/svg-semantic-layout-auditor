@@ -1,7 +1,9 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
+import { fileURLToPath } from 'node:url'
 
 import { ESTIMATED_FINDING_CODES, auditSvg } from '../src/audit.js'
+import { auditFile } from '../src/files.js'
 import { createReport, formatTextReport } from '../src/report.js'
 
 const OVERFLOWING = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 20" aria-hidden="true">
@@ -57,6 +59,15 @@ test('a bounded-input failure is still tagged', () => {
   assert.equal(result.findings.length, 1)
   assert.equal(result.findings[0].code, 'FILE_TOO_LARGE')
   assert.equal(result.findings[0].basis, 'static')
+})
+
+test('an oversized on-disk SVG is tagged and counted as static evidence', async () => {
+  const file = fileURLToPath(new URL('../examples/accessible-card.svg', import.meta.url))
+  const result = await auditFile(file, { maxBytes: 1 })
+  const report = createReport([result], { includeTimestamp: false })
+  assert.equal(result.findings[0].code, 'FILE_TOO_LARGE')
+  assert.equal(result.findings[0].basis, 'static')
+  assert.deepEqual(report.summary.byBasis, { static: 1, estimated: 0 })
 })
 
 test('a document with no <svg> root still tags its findings', () => {

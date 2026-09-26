@@ -1,7 +1,7 @@
 import { constants } from 'node:fs'
 import fs from 'node:fs/promises'
 import path from 'node:path'
-import { auditSvg, DEFAULT_LIMITS } from './audit.js'
+import { auditSvg, DEFAULT_LIMITS, withBasis } from './audit.js'
 
 const SKIPPED_DIRECTORIES = new Set(['.git', 'node_modules'])
 
@@ -109,11 +109,11 @@ export async function auditFile(filePath, options = {}) {
       path: absolute,
       validSvg: false,
       metadata: { bytes: read.bytes, elementCount: 0, viewBox: null, decorative: false },
-      findings: [{
+      findings: [withBasis({
         code: 'FILE_TOO_LARGE',
         severity: 'error',
         message: `SVG exceeds the configured ${maxBytes.toLocaleString()} byte limit.`,
-      }],
+      })],
     }
   }
   return { path: absolute, ...auditSvg(read.source, options) }
