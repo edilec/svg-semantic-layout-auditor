@@ -47,9 +47,23 @@ function finding(code, severity, message, node = null, evidence = undefined) {
   }
 }
 
+// WAI-ARIA 1.2 §6.5 and presentational-role conflict resolution: a global
+// property or focusability makes user agents ignore role="none/presentation".
+const GLOBAL_ARIA = new Set([
+  'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+  'aria-describedby', 'aria-details', 'aria-disabled', 'aria-dropeffect',
+  'aria-errormessage', 'aria-flowto', 'aria-grabbed', 'aria-haspopup',
+  'aria-hidden', 'aria-invalid', 'aria-keyshortcuts', 'aria-label',
+  'aria-labelledby', 'aria-live', 'aria-owns', 'aria-relevant',
+  'aria-roledescription',
+])
+
 function isDecorative(svg) {
   const role = String(attribute(svg, 'role') ?? '').toLowerCase()
-  return String(attribute(svg, 'aria-hidden') ?? '').toLowerCase() === 'true' || role === 'none' || role === 'presentation'
+  if (String(attribute(svg, 'aria-hidden') ?? '').toLowerCase() === 'true') return true
+  if (role !== 'none' && role !== 'presentation') return false
+  if (attribute(svg, 'tabindex') !== null) return false
+  return ![...svg.attributes.keys()].some((name) => GLOBAL_ARIA.has(name))
 }
 
 function referenceKind(value) {
@@ -82,9 +96,8 @@ function auditAccessibility(svg, allElements, idMap, textFor) {
   const labelledBy = attribute(svg, 'aria-labelledby')?.trim().split(/\s+/).filter(Boolean) ?? []
 
   if (decorative) {
-    // A decorative SVG is hidden from assistive technology, so a name on it is
-    // a contradiction: either the graphic is meaningful and should not be
-    // hidden, or the name is dead weight that some tooling still surfaces.
+    // A hidden or genuinely presentational SVG with a name has conflicting
+    // intent. A global ARIA property makes a presentational role ineffective.
     const sources = []
     if (ariaLabel) sources.push('aria-label')
     if (labelledBy.length > 0) sources.push('aria-labelledby')

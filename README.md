@@ -32,11 +32,12 @@ executing the SVG.
 | Active content | `<script>`, inline event handlers, `<foreignObject>`, CSS imports |
 | Layout heuristics | estimated text overflow beyond the viewBox or a marked card/box |
 
-Decorative SVGs marked with `aria-hidden="true"`, `role="none"`, or
-`role="presentation"` are not required to have a title or description. A
-decorative SVG that nevertheless supplies `aria-label`, `aria-labelledby`, or a
-non-empty `<title>` is reported as contradictory: either the graphic is
-meaningful and should not be hidden, or the name should go.
+SVGs hidden with `aria-hidden="true"` are not required to have a title or
+description; a name on one is reported as contradictory. A bare `role="none"`
+or `role="presentation"` is likewise treated as decorative, but a global ARIA
+property such as `aria-label` or `aria-labelledby` makes browsers ignore that
+presentational role. The auditor then treats the SVG as meaningful rather than
+reporting a false decorative-name contradiction.
 
 ### Estimates are labelled
 

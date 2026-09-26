@@ -30,6 +30,30 @@ test('role="none" and role="presentation" are treated as decorative', () => {
   }
 })
 
+test('a global ARIA name makes the presentational role ineffective', () => {
+  for (const role of ['none', 'presentation']) {
+    const viaLabel = codes(
+      `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10" role="${role}" aria-label="Sales chart"><desc>Sales by month</desc></svg>`,
+    )
+    assert.equal(viaLabel.includes('DECORATIVE_WITH_ACCESSIBLE_NAME'), false, role)
+    assert.equal(viaLabel.includes('ACCESSIBLE_NAME_MISSING'), false, role)
+
+    const viaReference = codes(
+      `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10" role="${role}" aria-labelledby="title"><title id="title">Sales chart</title><desc>Sales by month</desc></svg>`,
+    )
+    assert.equal(viaReference.includes('DECORATIVE_WITH_ACCESSIBLE_NAME'), false, role)
+  }
+})
+
+test('global description and focusability also defeat a presentational role', () => {
+  for (const attribute of ['aria-describedby="desc"', 'tabindex="0"']) {
+    const found = codes(
+      `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10" role="presentation" ${attribute}><title>Sales chart</title><desc id="desc">Sales by month</desc></svg>`,
+    )
+    assert.equal(found.includes('DECORATIVE_WITH_ACCESSIBLE_NAME'), false, attribute)
+  }
+})
+
 test('a decorative SVG that still names itself is contradictory', () => {
   const viaLabel = codes(
     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10" aria-hidden="true" aria-label="Quarterly revenue"></svg>',
