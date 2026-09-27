@@ -10,6 +10,33 @@ export const DEFAULT_LIMITS = Object.freeze({
   maxFindings: 1_000,
 })
 
+/**
+ * Findings derived from a heuristic model rather than from the document itself.
+ *
+ * Text bounds are computed from an average-character-width model, not from a
+ * rendering engine: font loading, font fallback, kerning, ligatures, shaping
+ * and text-rendering settings all move real glyph boxes. These findings are
+ * review prompts, not measurements, and a consumer must be able to tell them
+ * apart from exact document facts without parsing message prose.
+ */
+export const ESTIMATED_FINDING_CODES = Object.freeze([
+  'TEXT_MAY_OVERFLOW_VIEWBOX',
+  'TEXT_MAY_OVERFLOW_CONTAINER',
+])
+
+const ESTIMATED = new Set(ESTIMATED_FINDING_CODES)
+
+/**
+ * Tag a finding with the kind of evidence it rests on.
+ *
+ * - `static`: read directly from the parsed document. Exact.
+ * - `estimated`: produced by a layout heuristic. Approximate; a browser
+ *   measurement can disagree in either direction.
+ */
+export function withBasis(item) {
+  return { ...item, basis: ESTIMATED.has(item.code) ? 'estimated' : 'static' }
+}
+
 function finding(code, severity, message, node = null, evidence = undefined) {
   return {
     code,
@@ -20,9 +47,23 @@ function finding(code, severity, message, node = null, evidence = undefined) {
   }
 }
 
+// WAI-ARIA 1.2 §6.5 and presentational-role conflict resolution: a global
+// property or focusability makes user agents ignore role="none/presentation".
+const GLOBAL_ARIA = new Set([
+  'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+  'aria-describedby', 'aria-details', 'aria-disabled', 'aria-dropeffect',
+  'aria-errormessage', 'aria-flowto', 'aria-grabbed', 'aria-haspopup',
+  'aria-hidden', 'aria-invalid', 'aria-keyshortcuts', 'aria-label',
+  'aria-labelledby', 'aria-live', 'aria-owns', 'aria-relevant',
+  'aria-roledescription',
+])
+
 function isDecorative(svg) {
   const role = String(attribute(svg, 'role') ?? '').toLowerCase()
-  return String(attribute(svg, 'aria-hidden') ?? '').toLowerCase() === 'true' || role === 'none' || role === 'presentation'
+  if (String(attribute(svg, 'aria-hidden') ?? '').toLowerCase() === 'true') return true
+  if (role !== 'none' && role !== 'presentation') return false
+  if (attribute(svg, 'tabindex') !== null) return false
+  return ![...svg.attributes.keys()].some((name) => GLOBAL_ARIA.has(name))
 }
 
 function referenceKind(value) {
@@ -54,7 +95,24 @@ function auditAccessibility(svg, allElements, idMap, textFor) {
   const ariaLabel = attribute(svg, 'aria-label')?.trim()
   const labelledBy = attribute(svg, 'aria-labelledby')?.trim().split(/\s+/).filter(Boolean) ?? []
 
-  if (decorative) return findings
+  if (decorative) {
+    // A hidden or genuinely presentational SVG with a name has conflicting
+    // intent. A global ARIA property makes a presentational role ineffective.
+    const sources = []
+    if (ariaLabel) sources.push('aria-label')
+    if (labelledBy.length > 0) sources.push('aria-labelledby')
+    if (title && textFor(title)) sources.push('<title>')
+    if (sources.length > 0) {
+      findings.push(finding(
+        'DECORATIVE_WITH_ACCESSIBLE_NAME',
+        'warning',
+        `SVG is marked decorative but still provides a name via ${sources.join(', ')}; remove the name or stop hiding the graphic.`,
+        svg,
+        { sources },
+      ))
+    }
+    return findings
+  }
 
   if (!title && !ariaLabel && labelledBy.length === 0) {
     findings.push(finding('ACCESSIBLE_NAME_MISSING', 'warning', 'Non-decorative SVG has no <title>, aria-label, or aria-labelledby.', svg))
@@ -208,11 +266,24 @@ function auditActiveContent(allElements, idMap, { maxFindings = 1_000 } = {}) {
   return findings
 }
 
+/**
+ * Order by UTF-16 code unit, deliberately not by locale.
+ *
+ * `localeCompare` depends on ICU data that varies between Node builds and
+ * platforms. Rule codes mix uppercase letters with underscores, and collation
+ * treats punctuation differently from raw code points, so the same document
+ * could produce differently ordered findings on two correct machines.
+ */
+function byCodeUnit(left, right) {
+  if (left === right) return 0
+  return left < right ? -1 : 1
+}
+
 function compareFindings(left, right) {
   const severityOrder = { error: 0, warning: 1, info: 2 }
   return (severityOrder[left.severity] ?? 9) - (severityOrder[right.severity] ?? 9) ||
     (left.location?.offset ?? Number.MAX_SAFE_INTEGER) - (right.location?.offset ?? Number.MAX_SAFE_INTEGER) ||
-    left.code.localeCompare(right.code)
+    byCodeUnit(left.code, right.code)
 }
 
 /**
@@ -226,7 +297,7 @@ export function auditSvg(source, options = {}) {
     return {
       validSvg: false,
       metadata: { bytes: byteLength, elementCount: 0, viewBox: null, decorative: false },
-      findings: [finding('FILE_TOO_LARGE', 'error', `SVG exceeds the configured ${limits.maxBytes.toLocaleString()} byte limit.`)],
+      findings: [withBasis(finding('FILE_TOO_LARGE', 'error', `SVG exceeds the configured ${limits.maxBytes.toLocaleString()} byte limit.`))],
     }
   }
 
@@ -267,7 +338,7 @@ export function auditSvg(source, options = {}) {
     return {
       validSvg: false,
       metadata: { bytes: byteLength, elementCount: parsed.elementCount, viewBox: null, decorative: false },
-      findings: findings.sort(compareFindings),
+      findings: findings.map(withBasis).sort(compareFindings),
     }
   }
 
@@ -323,6 +394,6 @@ export function auditSvg(source, options = {}) {
       title: textFor(directChild(svg, 'title')) || null,
       description: textFor(directChild(svg, 'desc')) || null,
     },
-    findings: findings.sort(compareFindings),
+    findings: findings.map(withBasis).sort(compareFindings),
   }
 }
