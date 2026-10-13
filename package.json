@@ -1,6 +1,6 @@
 {
   "name": "@edilec/svg-semantic-layout-auditor",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Dependency-free SVG accessibility, reference-safety, and text-layout auditor.",
   "type": "module",
   "bin": {
