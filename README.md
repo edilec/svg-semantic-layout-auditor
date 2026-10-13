@@ -78,6 +78,11 @@ node ./src/cli.js examples --format json --output reports/svg-audit.json
 node ./src/cli.js public/media --strict
 ```
 
+The [public fixture walkthrough](https://edilec.com/open-source/svg-semantic-layout-auditor/)
+shows the clean and intentionally problematic examples, including the limits
+of estimated text-layout findings. The CLI runs locally and does not require
+an Edilec account or service.
+
 The default failure threshold is `error`. Use `--strict` (equivalent to
 `--fail-on warning`) when warnings should block a build, or `--fail-on none`
 when collecting a baseline report.
