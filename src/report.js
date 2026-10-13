@@ -1,6 +1,10 @@
+import { createRequire } from 'node:module'
 import path from 'node:path'
 
 export const REPORT_SCHEMA = 'dev.edilec.svg-semantic-layout-audit.v1'
+
+/** The package version, read from package.json so it cannot drift from the release. */
+export const TOOL_VERSION = createRequire(import.meta.url)('../package.json').version
 
 /** Order by UTF-16 code unit, deliberately not by locale. See src/audit.js. */
 function byCodeUnit(left, right) {
@@ -33,7 +37,7 @@ export function createReport(results, { cwd = process.cwd(), skippedSymlinks = [
   }
   return {
     schema: REPORT_SCHEMA,
-    toolVersion: '0.1.0',
+    toolVersion: TOOL_VERSION,
     ...(includeTimestamp ? { auditedAt: new Date().toISOString() } : {}),
     summary: {
       fileCount: files.length,

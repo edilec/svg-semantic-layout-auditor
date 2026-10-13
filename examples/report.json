@@ -1,6 +1,6 @@
 {
   "schema": "dev.edilec.svg-semantic-layout-audit.v1",
-  "toolVersion": "0.1.0",
+  "toolVersion": "0.2.1",
   "summary": {
     "fileCount": 1,
     "cleanFileCount": 1,

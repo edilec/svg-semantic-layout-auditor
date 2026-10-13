@@ -5,7 +5,7 @@ import process from 'node:process'
 import { pathToFileURL } from 'node:url'
 import { auditPaths } from './files.js'
 import { writeReportSafely } from './output.js'
-import { createReport, formatTextReport, shouldFail, terminalSafe } from './report.js'
+import { createReport, formatTextReport, shouldFail, terminalSafe, TOOL_VERSION } from './report.js'
 
 const HELP = `svg-semantic-layout-auditor
 
@@ -125,7 +125,7 @@ export async function run(args, io = { stdout: process.stdout, stderr: process.s
     return 0
   }
   if (parsed.action === 'version') {
-    io.stdout.write('0.1.0\n')
+    io.stdout.write(`${TOOL_VERSION}\n`)
     return 0
   }
 
