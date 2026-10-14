@@ -3,7 +3,10 @@
 All notable changes are documented here. This project follows
 [Semantic Versioning](https://semver.org/).
 
-## 0.2.1 - 2026-10-14
+## 0.2.2 - 2026-10-14
+
+The `v0.2.1` tag was created before this fix was merged, so it points at the
+0.2.0 code and was never released. This is the first release with the fix.
 
 ### Fixed
 

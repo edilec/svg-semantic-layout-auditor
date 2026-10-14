@@ -6,7 +6,7 @@ authors:
   - name: "Edilec Private Limited"
     website: "https://edilec.com/"
 abstract: "Dependency-free command-line tool for auditing SVG accessibility, reference safety, and text layout."
-version: "0.2.1"
+version: "0.2.2"
 date-released: 2026-10-14
 license: MIT
 repository-code: "https://github.com/edilec/svg-semantic-layout-auditor"
