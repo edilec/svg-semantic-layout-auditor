@@ -7,7 +7,7 @@
 A dependency-free Node.js CLI and library for static SVG accessibility,
 reference-safety, dimension, and text-layout checks.
 
-> **Maturity:** experimental `0.2.1`. The rule set and JSON schema may
+> **Maturity:** experimental `0.2.2`. The rule set and JSON schema may
 > change before `1.0.0`. This repository has not been published to npm.
 
 ## Why it exists
