@@ -31,6 +31,23 @@ test('JSON mode emits the documented schema', () => {
   assert.equal(report.summary.findingCount, 0)
 })
 
+test('--version, the report toolVersion, and the example report match package.json', async () => {
+  const { version } = JSON.parse(await fs.readFile(path.join(repository, 'package.json'), 'utf8'))
+
+  for (const flag of ['--version', '-v']) {
+    const result = execute([flag])
+    assert.equal(result.status, 0, result.stderr)
+    assert.equal(result.stdout, `${version}\n`)
+  }
+
+  const audited = execute(['examples/accessible-card.svg', '--format', 'json', '--no-timestamp'])
+  assert.equal(audited.status, 0, audited.stderr)
+  assert.equal(JSON.parse(audited.stdout).toolVersion, version)
+
+  const example = JSON.parse(await fs.readFile(path.join(repository, 'examples', 'report.json'), 'utf8'))
+  assert.equal(example.toolVersion, version)
+})
+
 test('strict mode fails on warnings and error mode ignores warnings', () => {
   const defaultRun = execute(['examples/problematic.svg', '--no-layout'])
   const strictRun = execute(['examples/problematic.svg', '--no-layout', '--strict'])
